@@ -7,7 +7,7 @@ export const rarcCrosswalk = [
     description: "X-ray not taken within the past 12 months or near enough to the start of treatment",
     denialType: "Denial",
     category: "Medical Necessity",
-    keywords: ["x-ray", "taken", "medical necessity"],
+    keywords: ["x-ray", "within past 12 months", "within past year"],
     status: "active",
   },
   {
@@ -15,7 +15,7 @@ export const rarcCrosswalk = [
     description: "Not paid separately when the patient is an inpatient",
     denialType: "Denial",
     category: "Payment/Contractual Info",
-    keywords: ["bundled service", "paid", "separately"],
+    keywords: ["bundled service", "patient is an inpatient", "not paid separately"],
     status: "active",
   },
   {
@@ -23,7 +23,7 @@ export const rarcCrosswalk = [
     description: "Equipment is the same or similar to equipment already being used",
     denialType: "Denial",
     category: "Payment/Contractual Info",
-    keywords: ["equipment", "same", "payment/contractual info"],
+    keywords: ["equipment", "same as equipment", "similar to equipment", "already being used"],
     status: "active",
   },
   {
@@ -31,7 +31,7 @@ export const rarcCrosswalk = [
     description: "This is the last monthly installment payment for this durable medical equipment",
     denialType: "Informational",
     category: "Appeal/Informational",
-    keywords: ["last", "monthly", "appeal/informational"],
+    keywords: ["last installment", "monthly", "payment for dme"],
     status: "active",
   },
   {
