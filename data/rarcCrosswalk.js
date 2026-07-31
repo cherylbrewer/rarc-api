@@ -3001,6 +3001,7 @@ export const rarcCrosswalk = [
   category: "Documentation Required",
   keywords: ["missing", "determination notes", "documentation required"],
   status: "active",
-}
+},
 ];
+
 export default rarcCrosswalk;
