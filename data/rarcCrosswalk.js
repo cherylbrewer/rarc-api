@@ -119,7 +119,7 @@ export const rarcCrosswalk = [
     description: "Missing or invalid HCPCS",
     denialType: "Denial",
     category: "Coding/Billing",
-    keywords: ["missing", "invalid", "coding/billing"],
+    keywords: ["missing HCPCS", "invalid HCPCS", "incomplete HCPCS"],
     status: "active",
   },
   {
@@ -791,7 +791,7 @@ export const rarcCrosswalk = [
     description: "Payment has been denied for/made only for a less extensive service/item",
     denialType: "Denial",
     category: "Medical Necessity",
-    keywords: ["medical necessity", "payment", "denied"],
+    keywords: ["medical necessity", "necessity documentation", "documentation supports necessity", "medical necessity not supported"],
     status: "active",
   },
   {
