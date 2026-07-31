@@ -3003,5 +3003,4 @@ export const rarcCrosswalk = [
   status: "active",
 },
 ];
-
 export default rarcCrosswalk;
