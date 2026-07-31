@@ -1,7 +1,5 @@
-export default function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+import rarcCrosswalk from "../../rarcCrosswalk.js";
 
-  res.status(200).json({ received: req.body });
+export default function handler(req, res) {
+  res.status(200).json(rarcCrosswalk);
 }
