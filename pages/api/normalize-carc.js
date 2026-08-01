@@ -122,7 +122,7 @@ export default function handler(req, res) {
       summary: "No matching CARC code found",
       category: null,
       adjustmentType: null,
-      confidence: 0,
+      matchScore: 0,
       matchedKeywords: [],
       recommendedAction: null,
     });
@@ -138,7 +138,7 @@ export default function handler(req, res) {
     recommendedAction: bestMatch.recommendedAction,
     requiresRemarkCode: bestMatch.requiresRemarkCode,
     preventable: bestMatch.preventable,
-    confidence: bestScore,
+    matchScore: bestScore,
     matchedKeywords: bestMatchedKeywords,
     status: bestMatch.status,
   });
