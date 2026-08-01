@@ -45,15 +45,16 @@ function calculateMatchScore(entry, normalizedSearch) {
       score += 15;
       matchedKeywords.push(keyword);
     } else {
-      const sharedWords = countSharedWords(
-        normalizedSearch,
-        normalizedKeyword
-      );
+  const sharedWords = countSharedWords(
+    normalizedSearch,
+    normalizedKeyword
+  );
 
-      if (sharedWords > 0) {
-        score += sharedWords * 3;
-      }
-    }
+  if (sharedWords > 0) {
+    score += sharedWords * 3;
+    matchedKeywords.push(keyword);
+  }
+}
   }
 
   for (const exclusion of entry.exclusions ?? []) {
