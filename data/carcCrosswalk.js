@@ -295,6 +295,13 @@ export const carcCrosswalk = [
       "missing precertification",
       "service not authorized",
       "no precert on file",
+      "service wasn't authorized",
+      "service was not authorized",
+      "authorization missing",
+      "authorization required",
+      "prior authorization required",
+      "precertification required",
+      "precertification missing",
     ],
     exclusions: [
       "authorization exceeded",
