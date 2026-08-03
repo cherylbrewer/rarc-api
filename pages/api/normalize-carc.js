@@ -1,4 +1,5 @@
 import carcCrosswalk from "../../data/carcCrosswalk.js";
+import carcMetadata from "../../data/carcMetadata.js";
 
 function normalizeText(value) {
   return String(value)
@@ -189,6 +190,7 @@ export default function handler(req, res) {
   if (!bestMatch || bestScore === 0) {
     return res.status(200).json({
       code: "N/A",
+      crosswalkVersion: carcMetadata.version,
       codeType: "CARC",
       summary: "No matching CARC code found",
       category: null,
@@ -205,6 +207,7 @@ export default function handler(req, res) {
 
   return res.status(200).json({
     code: bestMatch.code,
+    crosswalkVersion: carcMetadata.version,
     codeType: bestMatch.codeType,
     summary: bestMatch.summary,
     category: bestMatch.category,
