@@ -55,33 +55,50 @@ const ignoredWords = new Set([
   "not",
 ]);
 
-function countSharedWords(firstText, secondText) {
-  const firstWords = new Set(
-    firstText
-      .split(" ")
-      .filter(
-        (word) =>
-          word.length > 2 &&
-          !ignoredWords.has(word)
-      )
-  );
+const highValueWords = new Set([
+  "authorization",
+  "authorized",
+  "preauthorization",
+  "precertification",
+  "precert",
+  "duplicate",
+  "timely",
+  "filing",
+  "sequestration",
+  "medical",
+  "necessity",
+  "noncovered",
+  "covered",
+  "documentation",
+  "records",
+  "attachment",
+  "primary",
+  "secondary",
+  "coordination",
+  "benefits",
+  "fee",
+  "schedule",
+  "allowable",
+]);
 
-  const secondWords = new Set(
-    secondText
-      .split(" ")
-      .filter(
-        (word) =>
-          word.length > 2 &&
-          !ignoredWords.has(word)
-      )
-  );
+function calculateSharedWordScore(firstText, secondText) {
+  const firstWords = new Set(firstText.split(" "));
+  const secondWords = new Set(secondText.split(" "));
 
-  let sharedWords = 0;
+  let score = 0;
 
   for (const word of firstWords) {
-    if (secondWords.has(word)) {
-      sharedWords += 1;
+    if (
+      secondWords.has(word) &&
+      word.length > 2 &&
+      !ignoredWords.has(word)
+    ) {
+      score += highValueWords.has(word) ? 8 : 3;
     }
+  }
+
+  return score;
+}
   }
 
   return sharedWords;
@@ -91,7 +108,7 @@ function calculateMatchScore(entry, normalizedSearch) {
   let score = 0;
   const matchedKeywords = [];
 
-  for (const keyword of entry.keywords ?? []) {
+for (const keyword of entry.keywords ?? []) {
     const normalizedKeyword = normalizeText(keyword);
 
     if (normalizedSearch === normalizedKeyword) {
@@ -104,16 +121,16 @@ function calculateMatchScore(entry, normalizedSearch) {
       score += 15;
       matchedKeywords.push(keyword);
     } else {
-  const sharedWords = countSharedWords(
-    normalizedSearch,
-    normalizedKeyword
-  );
+      const sharedWordScore = calculateSharedWordScore(
+        normalizedSearch,
+        normalizedKeyword
+      );
 
-  if (sharedWords > 0) {
-    score += sharedWords * 3;
-    matchedKeywords.push(keyword);
-  }
-}
+      if (sharedWordScore > 0) {
+        score += sharedWordScore;
+        matchedKeywords.push(keyword);
+      }
+    }
   }
 
   for (const exclusion of entry.exclusions ?? []) {
