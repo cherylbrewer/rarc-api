@@ -22,13 +22,58 @@ function normalizeText(value) {
     .trim();
 }
 
+const ignoredWords = new Set([
+  "claim",
+  "claims",
+  "service",
+  "services",
+  "payer",
+  "patient",
+  "payment",
+  "payments",
+  "paid",
+  "billing",
+  "billed",
+  "provider",
+  "information",
+  "required",
+  "processed",
+  "processing",
+  "denied",
+  "denial",
+  "says",
+  "said",
+  "because",
+  "under",
+  "this",
+  "that",
+  "with",
+  "from",
+  "into",
+  "were",
+  "was",
+  "not",
+]);
+
 function countSharedWords(firstText, secondText) {
   const firstWords = new Set(
-    firstText.split(" ").filter((word) => word.length > 2)
+    firstText
+      .split(" ")
+      .filter(
+        (word) =>
+          word.length > 2 &&
+          !ignoredWords.has(word)
+      )
   );
 
   const secondWords = new Set(
-    secondText.split(" ").filter((word) => word.length > 2)
+    secondText
+      .split(" ")
+      .filter(
+        (word) =>
+          word.length > 2 &&
+          !ignoredWords.has(word)
+      )
   );
 
   let sharedWords = 0;
