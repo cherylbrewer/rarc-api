@@ -65,7 +65,6 @@ const highValueWords = new Set([
   "timely",
   "filing",
   "sequestration",
-  "medical",
   "necessity",
   "noncovered",
   "covered",
