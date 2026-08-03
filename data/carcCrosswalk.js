@@ -341,6 +341,12 @@ export const carcCrosswalk = [
       "submit requested records",
       "payer needs documentation",
       "additional records required",
+      "medical records required",
+      "additional medical records required",
+      "medical records are required",
+      "supporting medical records required",
+      "records required before processing",
+      "records needed before claim can be considered",
     ],
     exclusions: [
       "documentation not received",
