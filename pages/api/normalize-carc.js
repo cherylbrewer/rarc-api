@@ -99,16 +99,12 @@ function calculateSharedWordScore(firstText, secondText) {
 
   return score;
 }
-  }
-
-  return sharedWords;
-}
 
 function calculateMatchScore(entry, normalizedSearch) {
   let score = 0;
   const matchedKeywords = [];
 
-for (const keyword of entry.keywords ?? []) {
+  for (const keyword of entry.keywords ?? []) {
     const normalizedKeyword = normalizeText(keyword);
 
     if (normalizedSearch === normalizedKeyword) {
@@ -198,9 +194,13 @@ export default function handler(req, res) {
       summary: "No matching CARC code found",
       category: null,
       adjustmentType: null,
+      owner: null,
+      recommendedAction: null,
+      requiresRemarkCode: null,
+      preventable: null,
       matchScore: 0,
       matchedKeywords: [],
-      recommendedAction: null,
+      status: null,
     });
   }
 
