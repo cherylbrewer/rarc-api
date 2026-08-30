@@ -1,5 +1,5 @@
 // Brewer Data Solutions CARC Crosswalk
-// Version: 0.1.0
+// Version: 1.1.0
 // Last verified against the X12 CARC list: 2026-08-01
 //
 // IMPORTANT:
