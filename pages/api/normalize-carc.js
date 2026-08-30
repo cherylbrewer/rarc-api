@@ -54,6 +54,20 @@ const ignoredWords = new Set([
   "were",
   "was",
   "not",
+  "and",
+  "or",
+  "amount",
+  "adjustment",
+  "adjustments",
+  "procedure",
+  "procedures",
+  "code",
+  "codes",
+  "responsibility",
+  "another",
+  "other",
+  "prior",
+  "previous",
 ]);
 
 const highValueWords = new Set([
@@ -91,7 +105,7 @@ const knownAmbiguousPhrases = new Map([
   ["another payor", ["22", "109"]],
 ]);
 
-const MIN_MATCH_SCORE = 15;
+const MIN_MATCH_SCORE = 20;
 const AMBIGUITY_SCORE_GAP = 5;
 const MAX_AMBIGUOUS_MATCHES = 3;
 
@@ -114,62 +128,83 @@ function calculateSharedWordScore(firstText, secondText) {
   );
 }
 
+function containsPhrase(text, phrase) {
+  return ` ${text} `.includes(` ${phrase} `);
+}
+
 function calculateMatchScore(entry, normalizedSearch) {
   let score = 0;
+  let bestKeywordPhraseScore = 0;
   const matchedKeywords = [];
   const sharedTerms = new Set();
 
+  // Use the strongest phrase relationship rather than summing every similar
+  // keyword. This prevents an entry from winning simply because it contains
+  // many near-duplicate keyword phrases.
   for (const keyword of entry.keywords ?? []) {
     const normalizedKeyword = normalizeText(keyword);
+    let phraseScore = 0;
 
     if (normalizedSearch === normalizedKeyword) {
-      score += 40;
+      phraseScore = 40;
       matchedKeywords.push(keyword);
-    } else if (normalizedSearch.includes(normalizedKeyword)) {
-      score += 25;
+    } else if (containsPhrase(normalizedSearch, normalizedKeyword)) {
+      phraseScore = 25;
       matchedKeywords.push(keyword);
-    } else if (normalizedKeyword.includes(normalizedSearch)) {
-      // Preserve the existing validated scoring behavior, but do not report
-      // the full keyword as a literal match when the input is only a shorter
-      // fragment of that keyword.
-      score += 15;
+    } else if (containsPhrase(normalizedKeyword, normalizedSearch)) {
+      phraseScore = 15;
 
       for (const term of getSharedTerms(normalizedSearch, normalizedKeyword)) {
         sharedTerms.add(term);
       }
     } else {
-      const terms = getSharedTerms(normalizedSearch, normalizedKeyword);
-      const sharedWordScore = calculateSharedWordScore(
-        normalizedSearch,
-        normalizedKeyword
-      );
-
-      if (sharedWordScore > 0) {
-        score += sharedWordScore;
-
-        for (const term of terms) {
-          sharedTerms.add(term);
-        }
+      for (const term of getSharedTerms(normalizedSearch, normalizedKeyword)) {
+        sharedTerms.add(term);
       }
     }
+
+    bestKeywordPhraseScore = Math.max(bestKeywordPhraseScore, phraseScore);
   }
+
+  // Fuzzy evidence is scored once per unique meaningful term, not once for
+  // every keyword containing the same term.
+  const sharedWordScore = [...sharedTerms].reduce(
+    (total, word) => total + (highValueWords.has(word) ? 8 : 3),
+    0
+  );
+
+  score += Math.max(bestKeywordPhraseScore, sharedWordScore);
 
   for (const exclusion of entry.exclusions ?? []) {
     const normalizedExclusion = normalizeText(exclusion);
 
-    if (normalizedSearch.includes(normalizedExclusion)) {
+    if (containsPhrase(normalizedSearch, normalizedExclusion)) {
       score -= 30;
     }
   }
 
   const normalizedSummary = normalizeText(entry.summary);
   const normalizedCategory = normalizeText(entry.category);
+  const meaningfulSearchTerms = normalizedSearch
+    .split(" ")
+    .filter((word) => word.length > 2 && !ignoredWords.has(word));
 
-  if (normalizedSummary.includes(normalizedSearch)) {
+  // Summary/category bonuses are useful for phrases, but one generic word
+  // should not become a confident CARC match merely because it appears in a
+  // summary or category label.
+  if (normalizedSearch === normalizedSummary) {
+    score += 40;
+  } else if (
+    meaningfulSearchTerms.length >= 2 &&
+    containsPhrase(normalizedSummary, normalizedSearch)
+  ) {
     score += 12;
   }
 
-  if (normalizedCategory.includes(normalizedSearch)) {
+  if (
+    meaningfulSearchTerms.length >= 2 &&
+    containsPhrase(normalizedCategory, normalizedSearch)
+  ) {
     score += 8;
   }
 
@@ -307,6 +342,27 @@ export default function handler(req, res) {
   }
 
   const bestMatch = rankedMatches[0];
+
+  // Do not force a CARC when the strongest evidence is still weak.
+  if (bestMatch.score < MIN_MATCH_SCORE) {
+    return res.status(200).json({
+      matchStatus: "no_match",
+      code: "N/A",
+      crosswalkVersion: carcMetadata.version,
+      codeType: "CARC",
+      summary: "No matching CARC code found",
+      category: null,
+      adjustmentType: null,
+      owner: null,
+      recommendedAction: null,
+      requiresRemarkCode: null,
+      preventable: null,
+      matchScore: bestMatch.score,
+      matchedKeywords: bestMatch.matchedKeywords,
+      sharedTerms: bestMatch.sharedTerms,
+      status: null,
+    });
+  }
 
   // If two or more meaningful candidates score almost the same, return the
   // close candidates rather than pretending the first one is certain.

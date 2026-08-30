@@ -1,5 +1,47 @@
 # Changelog
 
+## 1.2.0 — 2026-08-30
+
+### Added
+
+- CARC 1 — deductible
+- CARC 2 — coinsurance
+- CARC 3 — copayment
+- CARC 4 — procedure/modifier inconsistency
+- CARC 23 — prior-payer adjudication impact
+- CARC 97 — bundled/inclusive payment
+- Natural-language coverage for `noncovered service` under CARC 96.
+- Natural-language coverage for `procedure was not authorized` under CARC 197.
+
+### Matching changes
+
+- Raised the minimum confidence required for a single-match response.
+- Weak evidence now returns `matchStatus: "no_match"` instead of forcing a CARC.
+- Similar keyword phrases no longer accumulate duplicate weight.
+- Fuzzy word evidence is counted once per unique meaningful term.
+- Phrase containment now respects word boundaries, preventing false substring matches such as `correct payer` inside `incorrect payer`.
+- Hardened the exported `searchCarcs()` helper to use the same safer phrase and fuzzy-evidence principles.
+
+### Crosswalk cleanup
+
+- Removed an over-broad CARC 22 exclusion that conflicted with its own `incorrect payer order` keyword.
+- Added additional CARC 23 language for prior-payer payment/adjudication scenarios.
+- Updated the crosswalk verification date to 2026-08-30.
+
+### Validation
+
+- 17 supported CARCs.
+- 201 configured keywords regression-tested: 201/201 routed to the intended CARC.
+- All configured exclusion phrases tested against self-matching: 0 failures.
+- Every BDS summary tested against its own CARC: 0 failures.
+- Targeted collision tests passed for:
+  - CARC 22 vs. 23 vs. 109
+  - CARC 18 vs. 97
+  - CARC 4 vs. 197
+  - CARC 50 vs. 96 vs. 252
+  - CARC 1 vs. 2 vs. 3
+  - weak generic phrases returning `no_match`
+
 ## 1.1.0 — 2026-08-29
 
 ### Added
@@ -11,7 +53,7 @@
 
 ### Changed
 
-- `matchedKeywords` now reports literal phrase matches rather than fuzzy keyword candidates.
+- `matchedKeywords` reports literal phrase matches rather than fuzzy keyword candidates.
 - Clear, well-supported denial text continues to return a single CARC.
 
 ### Validated examples

@@ -1,6 +1,6 @@
 // Brewer Data Solutions CARC Crosswalk
-// Version: 1.1.0
-// Last verified against the X12 CARC list: 2026-08-01
+// Version: 1.2.0
+// Last verified against the X12 CARC list: 2026-08-30
 //
 // IMPORTANT:
 // - "summary" contains original Brewer Data Solutions wording.
@@ -11,6 +11,142 @@
 // - A CARC does not always represent a denial.
 
 export const carcCrosswalk = [
+  {
+    code: "1",
+    codeType: "CARC",
+    summary:
+      "An amount was applied to the patient's deductible.",
+    category: "Patient Responsibility",
+    adjustmentType: "Deductible",
+    keywords: [
+      "deductible",
+      "deductible amount",
+      "patient deductible",
+      "applied to deductible",
+      "amount applied to deductible",
+      "charges applied to deductible",
+    ],
+    exclusions: [
+      "coinsurance",
+      "co-insurance",
+      "copayment",
+      "co-payment",
+      "copay",
+      "contractual adjustment",
+    ],
+    owner: "Patient Accounting / Billing",
+    recommendedAction:
+      "Confirm the adjustment group code and benefit adjudication. If the amount is valid patient responsibility, post it to deductible responsibility; do not treat it as a denial or recovery opportunity. Investigate only when the deductible application conflicts with eligibility or benefit information or the expected adjudication.",
+    requiresRemarkCode: false,
+    preventable: false,
+    status: "active",
+    effectiveDate: "1995-01-01",
+    lastModifiedDate: null,
+    deactivationDate: null,
+  },
+
+  {
+    code: "2",
+    codeType: "CARC",
+    summary:
+      "An amount was applied as coinsurance under the patient's benefits.",
+    category: "Patient Responsibility",
+    adjustmentType: "Coinsurance",
+    keywords: [
+      "coinsurance",
+      "co-insurance",
+      "coinsurance amount",
+      "patient coinsurance",
+      "applied as coinsurance",
+      "percentage responsibility",
+    ],
+    exclusions: [
+      "deductible",
+      "copayment",
+      "co-payment",
+      "copay",
+    ],
+    owner: "Patient Accounting / Billing",
+    recommendedAction:
+      "Confirm the adjustment group code and benefit adjudication. If valid, post the amount to coinsurance responsibility; do not treat ordinary coinsurance as a denial or underpayment. Investigate when the percentage or amount conflicts with the patient's benefits or expected reimbursement.",
+    requiresRemarkCode: false,
+    preventable: false,
+    status: "active",
+    effectiveDate: "1995-01-01",
+    lastModifiedDate: null,
+    deactivationDate: null,
+  },
+
+  {
+    code: "3",
+    codeType: "CARC",
+    summary:
+      "An amount was applied as the patient's copayment.",
+    category: "Patient Responsibility",
+    adjustmentType: "Copayment",
+    keywords: [
+      "copay",
+      "co-pay",
+      "copayment",
+      "co-payment",
+      "copayment amount",
+      "patient copay",
+      "patient copayment",
+      "applied as copayment",
+    ],
+    exclusions: [
+      "deductible",
+      "coinsurance",
+      "co-insurance",
+    ],
+    owner: "Patient Accounting / Billing",
+    recommendedAction:
+      "Confirm the adjustment group code and benefit adjudication. If valid, post the amount to copayment responsibility; do not treat an expected copay as a denial or recovery opportunity. Investigate when the copay conflicts with the patient's plan benefits or expected adjudication.",
+    requiresRemarkCode: false,
+    preventable: false,
+    status: "active",
+    effectiveDate: "1995-01-01",
+    lastModifiedDate: null,
+    deactivationDate: null,
+  },
+
+  {
+    code: "4",
+    codeType: "CARC",
+    summary:
+      "The billed procedure code and modifier are not consistent with each other.",
+    category: "Coding",
+    adjustmentType: "Coding / Modifier",
+    keywords: [
+      "procedure code inconsistent with modifier",
+      "procedure inconsistent with modifier",
+      "modifier inconsistent with procedure",
+      "modifier mismatch",
+      "procedure modifier mismatch",
+      "invalid modifier combination",
+      "modifier does not match procedure",
+      "modifier not consistent with procedure",
+      "procedure and modifier inconsistent",
+    ],
+    exclusions: [
+      "missing modifier",
+      "missing information",
+      "medical necessity",
+      "non-covered service",
+      "bundled service",
+      "included in another service",
+    ],
+    owner: "Coding / Billing",
+    recommendedAction:
+      "Review the billed procedure and modifier combination, payer policy, and source documentation. Correct an invalid or unsupported modifier when appropriate and submit a corrected claim or appeal when the original coding is supported.",
+    requiresRemarkCode: false,
+    preventable: true,
+    status: "active",
+    effectiveDate: "1995-01-01",
+    lastModifiedDate: "2020-03-01",
+    deactivationDate: null,
+  },
+
   {
     code: "16",
     codeType: "CARC",
@@ -119,7 +255,6 @@ export const carcCrosswalk = [
       "non-covered benefit",
       "authorization missing",
       "wrong payer",
-      "incorrect payer",
       "correct payer",
       "send to correct payer",
       "submit to correct payer",
@@ -135,6 +270,48 @@ export const carcCrosswalk = [
     status: "active",
     effectiveDate: "1995-01-01",
     lastModifiedDate: "2007-09-30",
+    deactivationDate: null,
+  },
+
+  {
+    code: "23",
+    codeType: "CARC",
+    summary:
+      "The adjustment reflects the effect of adjudication already performed by a prior payer.",
+    category: "Coordination of Benefits",
+    adjustmentType: "Prior Payer Adjudication",
+    keywords: [
+      "prior payer adjudication",
+      "prior payer impact",
+      "impact of prior payer adjudication",
+      "previous payer adjudication",
+      "previous payer payment",
+      "previous payer already paid",
+      "prior payer already paid",
+      "prior payer payment",
+      "prior payer payment and adjustments",
+      "prior payer payments and adjustments",
+      "oa 23",
+    ],
+    exclusions: [
+      "other payer",
+      "another payer",
+      "other insurance is primary",
+      "another insurance is primary",
+      "coordination of benefits",
+      "wrong payer",
+      "incorrect payer",
+      "send to correct payer",
+      "submit to correct payer",
+    ],
+    owner: "Payment Posting / COB",
+    recommendedAction:
+      "Treat the amount as the current payer's reporting of prior-payer impact, not as a new denial or a second adjustment to post. Reconcile the prior payer payment and adjustments already posted to accounts receivable, confirm the current payer's coordination-of-benefits adjudication, and investigate only if the reported impact does not reconcile.",
+    requiresRemarkCode: false,
+    preventable: false,
+    status: "active",
+    effectiveDate: "1995-01-01",
+    lastModifiedDate: "2012-09-30",
     deactivationDate: null,
   },
 
@@ -261,6 +438,7 @@ export const carcCrosswalk = [
       "non-covered charge",
       "noncovered charge",
       "service not covered",
+      "noncovered service",
       "charge not covered",
       "benefit not covered",
       "excluded service",
@@ -281,6 +459,45 @@ export const carcCrosswalk = [
     recommendedAction:
       "Review the accompanying RARC and the patient's benefit plan to identify the specific coverage reason. Determine whether the service should be corrected, billed to another payer, appealed, or transferred to patient responsibility when permitted.",
     requiresRemarkCode: true,
+    preventable: "Varies",
+    status: "active",
+    effectiveDate: "1995-01-01",
+    lastModifiedDate: "2017-07-01",
+    deactivationDate: null,
+  },
+
+  {
+    code: "97",
+    codeType: "CARC",
+    summary:
+      "Payment for this service is included in the allowance or payment for another service that was already adjudicated.",
+    category: "Bundled / Inclusive",
+    adjustmentType: "Bundled / Inclusive",
+    keywords: [
+      "included in another service",
+      "included in payment for another service",
+      "included in allowance for another service",
+      "included in payment for another procedure",
+      "payment included in another service",
+      "allowance included in another service",
+      "bundled service",
+      "bundled into another service",
+      "inclusive service",
+      "packaged service",
+      "not separately payable",
+    ],
+    exclusions: [
+      "duplicate claim",
+      "duplicate service",
+      "exact duplicate",
+      "non-covered service",
+      "procedure code inconsistent with modifier",
+      "modifier mismatch",
+    ],
+    owner: "Coding / Contract Review",
+    recommendedAction:
+      "Identify the related service into which payment was included and verify the payer's bundling, packaging, coding, and contract rules. If the inclusion is correct, no separate recovery is due. If the services should be separately payable, determine whether coding or modifier correction or a payer appeal is appropriate.",
+    requiresRemarkCode: false,
     preventable: "Varies",
     status: "active",
     effectiveDate: "1995-01-01",
@@ -352,6 +569,8 @@ export const carcCrosswalk = [
       "no precert on file",
       "service wasn't authorized",
       "service was not authorized",
+      "procedure was not authorized",
+      "procedure wasn't authorized",
       "authorization missing",
       "authorization required",
       "prior authorization required",
@@ -496,75 +715,170 @@ export function searchCarcs(searchText) {
 
 function calculateMatchScore(item, normalizedSearch) {
   let score = 0;
+  let bestKeywordPhraseScore = 0;
+  const sharedTerms = new Set();
 
   const normalizedCode = normalizeText(item.code);
   const normalizedSummary = normalizeText(item.summary);
   const normalizedCategory = normalizeText(item.category);
   const normalizedAction = normalizeText(item.recommendedAction);
 
-  // Exact code match receives the highest score.
   if (normalizedSearch === normalizedCode) {
     score += 100;
   }
 
-  // Exact keyword phrases are the strongest natural-language matches.
   for (const keyword of item.keywords) {
     const normalizedKeyword = normalizeText(keyword);
+    let phraseScore = 0;
 
     if (normalizedSearch === normalizedKeyword) {
-      score += 40;
-    } else if (normalizedSearch.includes(normalizedKeyword)) {
-      score += 25;
-    } else if (normalizedKeyword.includes(normalizedSearch)) {
-      score += 15;
+      phraseScore = 40;
+    } else if (containsPhrase(normalizedSearch, normalizedKeyword)) {
+      phraseScore = 25;
+    } else if (containsPhrase(normalizedKeyword, normalizedSearch)) {
+      phraseScore = 15;
     } else {
-      score += countSharedWords(normalizedSearch, normalizedKeyword) * 3;
+      for (const term of getSearchSharedTerms(
+        normalizedSearch,
+        normalizedKeyword
+      )) {
+        sharedTerms.add(term);
+      }
     }
+
+    bestKeywordPhraseScore = Math.max(bestKeywordPhraseScore, phraseScore);
   }
 
-  // Exclusion phrases subtract from the score to reduce false matches.
+  const sharedWordScore = [...sharedTerms].reduce(
+    (total, word) => total + (searchHighValueWords.has(word) ? 8 : 3),
+    0
+  );
+
+  score += Math.max(bestKeywordPhraseScore, sharedWordScore);
+
   for (const exclusion of item.exclusions ?? []) {
     const normalizedExclusion = normalizeText(exclusion);
 
-    if (normalizedSearch.includes(normalizedExclusion)) {
+    if (containsPhrase(normalizedSearch, normalizedExclusion)) {
       score -= 30;
     }
   }
 
-  if (normalizedSummary.includes(normalizedSearch)) {
+  const meaningfulSearchTerms = normalizedSearch
+    .split(" ")
+    .filter((word) => word.length > 2 && !searchIgnoredWords.has(word));
+
+  if (normalizedSearch === normalizedSummary) {
+    score += 40;
+  } else if (
+    meaningfulSearchTerms.length >= 2 &&
+    containsPhrase(normalizedSummary, normalizedSearch)
+  ) {
     score += 12;
   }
 
-  if (normalizedCategory.includes(normalizedSearch)) {
+  if (
+    meaningfulSearchTerms.length >= 2 &&
+    containsPhrase(normalizedCategory, normalizedSearch)
+  ) {
     score += 8;
   }
 
-  if (normalizedAction.includes(normalizedSearch)) {
+  if (
+    meaningfulSearchTerms.length >= 2 &&
+    containsPhrase(normalizedAction, normalizedSearch)
+  ) {
     score += 4;
   }
 
   return Math.max(score, 0);
 }
 
-function countSharedWords(firstText, secondText) {
-  const firstWords = new Set(
-    firstText.split(" ").filter((word) => word.length > 2)
-  );
+const searchIgnoredWords = new Set([
+  "claim",
+  "claims",
+  "service",
+  "services",
+  "payer",
+  "patient",
+  "payment",
+  "payments",
+  "paid",
+  "billing",
+  "billed",
+  "provider",
+  "information",
+  "required",
+  "processed",
+  "processing",
+  "denied",
+  "denial",
+  "this",
+  "that",
+  "with",
+  "from",
+  "under",
+  "into",
+  "were",
+  "was",
+  "not",
+  "and",
+  "or",
+  "amount",
+  "adjustment",
+  "adjustments",
+  "procedure",
+  "procedures",
+  "code",
+  "codes",
+  "responsibility",
+  "another",
+  "other",
+  "prior",
+  "previous",
+]);
 
-  const secondWords = new Set(
-    secondText.split(" ").filter((word) => word.length > 2)
-  );
+const searchHighValueWords = new Set([
+  "authorization",
+  "authorized",
+  "preauthorization",
+  "precertification",
+  "precert",
+  "duplicate",
+  "timely",
+  "filing",
+  "sequestration",
+  "necessity",
+  "noncovered",
+  "covered",
+  "documentation",
+  "records",
+  "attachment",
+  "primary",
+  "secondary",
+  "coordination",
+  "benefits",
+  "fee",
+  "schedule",
+  "allowable",
+]);
 
-  let sharedWords = 0;
-
-  for (const word of firstWords) {
-    if (secondWords.has(word)) {
-      sharedWords += 1;
-    }
-  }
-
-  return sharedWords;
+function containsPhrase(text, phrase) {
+  return ` ${text} `.includes(` ${phrase} `);
 }
+
+function getSearchSharedTerms(firstText, secondText) {
+  const firstWords = new Set(firstText.split(" "));
+  const secondWords = new Set(secondText.split(" "));
+
+  return [...firstWords].filter(
+    (word) =>
+      secondWords.has(word) &&
+      word.length > 2 &&
+      !searchIgnoredWords.has(word)
+  );
+}
+
 
 function normalizeText(value) {
   return String(value)
