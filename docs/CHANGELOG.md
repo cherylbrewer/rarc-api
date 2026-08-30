@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.3.0 — 2026-08-30
+
+### Response terminology
+
+- Renamed the response/crosswalk field `adjustmentType` to `reasonType`.
+- Updated all 17 supported CARCs so `reasonType` describes the specific adjudication reason rather than implying every CARC is an operational adjustment.
+- Reworded the CARC 23 BDS summary from adjustment-centric language to: `The amount reflects how a prior payer previously adjudicated the claim or service.`
+- Updated README terminology to distinguish CARC terminology from the operational meaning of returned amounts.
+- Removed a duplicate `matchedKeywords` property in the response formatter.
+
+### Compatibility note
+
+- This release changes the response schema: clients using `adjustmentType` should use `reasonType` instead.
+
+### Validation
+
+- 201/201 configured keywords routed to the intended CARC.
+- 17/17 BDS summaries routed to the intended CARC.
+- 88/88 configured exclusion phrases did not route back to the CARC that excludes them.
+- 17 targeted production-style collision and weak-evidence tests passed.
+
 ## 1.2.0 — 2026-08-30
 
 ### Added

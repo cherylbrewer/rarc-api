@@ -1,11 +1,11 @@
 // Brewer Data Solutions CARC Crosswalk
-// Version: 1.2.0
+// Version: 1.3.0
 // Last verified against the X12 CARC list: 2026-08-30
 //
 // IMPORTANT:
 // - "summary" contains original Brewer Data Solutions wording.
 // - It is not the official X12 description.
-// - "category", "adjustmentType", "owner", "keywords", and
+// - "category", "reasonType", "owner", "keywords", and
 //   "recommendedAction" are operational fields created by BDS.
 // - CARCs explain why a claim or service was paid differently than billed.
 // - A CARC does not always represent a denial.
@@ -17,7 +17,7 @@ export const carcCrosswalk = [
     summary:
       "An amount was applied to the patient's deductible.",
     category: "Patient Responsibility",
-    adjustmentType: "Deductible",
+    reasonType: "Deductible",
     keywords: [
       "deductible",
       "deductible amount",
@@ -51,7 +51,7 @@ export const carcCrosswalk = [
     summary:
       "An amount was applied as coinsurance under the patient's benefits.",
     category: "Patient Responsibility",
-    adjustmentType: "Coinsurance",
+    reasonType: "Coinsurance",
     keywords: [
       "coinsurance",
       "co-insurance",
@@ -83,7 +83,7 @@ export const carcCrosswalk = [
     summary:
       "An amount was applied as the patient's copayment.",
     category: "Patient Responsibility",
-    adjustmentType: "Copayment",
+    reasonType: "Copayment",
     keywords: [
       "copay",
       "co-pay",
@@ -116,7 +116,7 @@ export const carcCrosswalk = [
     summary:
       "The billed procedure code and modifier are not consistent with each other.",
     category: "Coding",
-    adjustmentType: "Coding / Modifier",
+    reasonType: "Procedure / Modifier Inconsistency",
     keywords: [
       "procedure code inconsistent with modifier",
       "procedure inconsistent with modifier",
@@ -153,7 +153,7 @@ export const carcCrosswalk = [
     summary:
       "The claim or service is missing required information or contains a billing or submission error.",
     category: "Missing / Invalid Information",
-    adjustmentType: "Denial",
+    reasonType: "Missing / Invalid Information",
     keywords: [
       "claim missing information",
       "service missing information",
@@ -191,7 +191,7 @@ export const carcCrosswalk = [
     summary:
       "The payer identified the claim or service as an exact duplicate of one previously received or processed.",
     category: "Duplicate Claim / Service",
-    adjustmentType: "Denial",
+    reasonType: "Duplicate Claim / Service",
     keywords: [
       "exact duplicate claim",
       "duplicate claim",
@@ -228,7 +228,7 @@ export const carcCrosswalk = [
     summary:
       "Another insurer may be responsible for the claim under coordination-of-benefits rules.",
     category: "Coordination of Benefits",
-    adjustmentType: "Coordination of Benefits",
+    reasonType: "Coordination of Benefits",
     keywords: [
       "another payer may be responsible",
       "other insurance may be primary",
@@ -277,9 +277,9 @@ export const carcCrosswalk = [
     code: "23",
     codeType: "CARC",
     summary:
-      "The adjustment reflects the effect of adjudication already performed by a prior payer.",
+      "The amount reflects how a prior payer previously adjudicated the claim or service.",
     category: "Coordination of Benefits",
-    adjustmentType: "Prior Payer Adjudication",
+    reasonType: "Prior Payer Adjudication",
     keywords: [
       "prior payer adjudication",
       "prior payer impact",
@@ -321,7 +321,7 @@ export const carcCrosswalk = [
     summary:
       "The claim was received after the payer's filing deadline.",
     category: "Timely Filing",
-    adjustmentType: "Denial",
+    reasonType: "Timely Filing",
     keywords: [
       "timely filing expired",
       "filing deadline expired",
@@ -357,7 +357,7 @@ export const carcCrosswalk = [
     summary:
       "The billed charge exceeds the payer's fee schedule, maximum allowable amount, contracted rate, or legislated payment limit.",
     category: "Contractual / Fee Schedule",
-    adjustmentType: "Contractual Adjustment",
+    reasonType: "Contractual / Fee Schedule",
     keywords: [
       "charge exceeds fee schedule",
       "exceeds maximum allowable",
@@ -395,7 +395,7 @@ export const carcCrosswalk = [
     summary:
       "The payer considers the service non-covered because its medical-necessity requirements were not met.",
     category: "Medical Necessity",
-    adjustmentType: "Denial",
+    reasonType: "Medical Necessity",
     keywords: [
       "not medically necessary",
       "medical necessity not met",
@@ -433,7 +433,7 @@ export const carcCrosswalk = [
     summary:
       "The payer considers the charge non-covered for a reason identified by the accompanying remark code.",
     category: "Non-Covered",
-    adjustmentType: "Denial",
+    reasonType: "Non-Covered",
     keywords: [
       "non-covered charge",
       "noncovered charge",
@@ -472,7 +472,7 @@ export const carcCrosswalk = [
     summary:
       "Payment for this service is included in the allowance or payment for another service that was already adjudicated.",
     category: "Bundled / Inclusive",
-    adjustmentType: "Bundled / Inclusive",
+    reasonType: "Bundled / Inclusive",
     keywords: [
       "included in another service",
       "included in payment for another service",
@@ -511,7 +511,7 @@ export const carcCrosswalk = [
   summary:
     "This payer or contractor does not cover the claim or service. The claim must be sent to the correct payer or contractor.",
   category: "Wrong Payer / Claim Routing",
-  adjustmentType: "Denial",
+  reasonType: "Wrong Payer / Claim Routing",
   keywords: [
     "wrong payer",
     "incorrect payer",
@@ -552,7 +552,7 @@ export const carcCrosswalk = [
     summary:
       "Required precertification, authorization, notification, or pretreatment approval was absent.",
     category: "Authorization / Pre-cert",
-    adjustmentType: "Denial",
+    reasonType: "Authorization / Pre-cert",
     keywords: [
       "authorization absent",
       "prior authorization absent",
@@ -601,7 +601,7 @@ export const carcCrosswalk = [
     summary:
       "The payer needs an attachment or other documentation before it can adjudicate the claim or service.",
     category: "Documentation Required",
-    adjustmentType: "Denial",
+    reasonType: "Documentation Required",
     keywords: [
       "documentation required",
       "attachment required",
@@ -645,7 +645,7 @@ export const carcCrosswalk = [
     summary:
       "The payment was reduced because of a federal sequestration requirement.",
     category: "Government Payment Reduction",
-    adjustmentType: "Reduction",
+    reasonType: "Sequestration",
     keywords: [
       "sequestration reduction",
       "federal sequestration",
