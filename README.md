@@ -70,6 +70,10 @@ Current crosswalk/API behavior version: **1.4.0**
 
 ## Important notes
 
+## Important notes
+
+**Do not submit protected health information (PHI), patient identifiers, or other sensitive healthcare data. This API is intended for de-identified denial and remittance text only.**
+
 BDS summaries, categories, ownership, recommended actions, keywords, exclusions, and other operational fields are independently written by Brewer Data Solutions. Do not treat them as verbatim X12 code descriptions.
 
 This API is a decision-support and normalization tool. Users should validate results against the actual remittance, payer documentation, contract terms, benefit information, coding rules, and applicable billing requirements.
