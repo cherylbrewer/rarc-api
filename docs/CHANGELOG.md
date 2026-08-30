@@ -1,5 +1,38 @@
 # Changelog
 
+## 1.4.0 — 2026-08-30
+
+### Added
+
+Expanded the curated CARC set from 17 to 25 codes with the coding-consistency family:
+
+- CARC 5 — procedure code/type of bill vs. place of service
+- CARC 6 — procedure/revenue code vs. patient age
+- CARC 7 — procedure/revenue code vs. patient gender
+- CARC 8 — procedure code vs. provider type/specialty/taxonomy
+- CARC 9 — diagnosis vs. patient age
+- CARC 10 — diagnosis vs. patient gender
+- CARC 11 — diagnosis vs. procedure
+- CARC 12 — diagnosis vs. provider type
+
+### Guardrails
+
+- Generic `age mismatch` returns `no_match` rather than forcing CARC 6 or 9.
+- Generic `gender mismatch` returns `no_match` rather than forcing CARC 7 or 10.
+- Generic `provider mismatch` returns `no_match` rather than forcing CARC 8 or 12.
+- CARC 5 is kept separate from unsupported CARC 58 language describing treatment rendered in an inappropriate or invalid place of service.
+- CARC 11 is guarded against medical-necessity language intended for CARC 50.
+- Existing CARCs 4, 50, 96, 197, 22, 23, 109, 18, and 97 remain protected by regression testing.
+
+### Validation
+
+- 25 supported CARCs.
+- 268/268 configured keywords routed to the intended CARC.
+- 25/25 BDS summaries routed to the intended CARC.
+- 147/147 configured exclusion phrases did not route back to the CARC that excludes them.
+- 29 targeted production-style collision and weak-evidence tests passed.
+- The exported `searchCarcs()` helper returned the intended CARC as the top result for all 268 configured keywords.
+
 ## 1.3.0 — 2026-08-30
 
 ### Response terminology

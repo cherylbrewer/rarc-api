@@ -4,15 +4,15 @@ The BDS Denial Intelligence API interprets free-text healthcare denial and remit
 
 ## Current scope
 
-Version 1.3.0 supports a curated subset of 17 CARCs:
+Version 1.4.0 supports a curated subset of 25 CARCs:
 
-`1, 2, 3, 4, 16, 18, 22, 23, 29, 45, 50, 96, 97, 109, 197, 252, 253`
+`1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 18, 22, 23, 29, 45, 50, 96, 97, 109, 197, 252, 253`
 
 It is intended for free-text denial/remittance language, portal text, notes, and other workflows where a reliable CARC is not already available.
 
 It is **not** intended to replace the CARC supplied on a properly populated 835 remittance.
 
-Not every supported CARC represents a denial. The current set also includes patient-responsibility amounts, prior-payer adjudication, contractual payment limits, bundled/inclusive payment logic, and government payment reductions.
+Not every supported CARC represents a denial. The current set also includes patient-responsibility amounts, prior-payer adjudication, contractual payment limits, bundled/inclusive payment logic, coding-consistency edits, and government payment reductions.
 
 ## Response behavior
 
@@ -47,25 +47,26 @@ Weak or overly generic evidence returns:
 - `matchStatus: "no_match"`
 - `code: "N/A"`
 
-This prevents broad phrases such as `modifier`, `patient responsibility`, or `another service` from being forced into a CARC without enough context.
+This prevents broad phrases such as `modifier`, `patient responsibility`, `age mismatch`, `gender mismatch`, `provider mismatch`, or `another service` from being forced into a CARC without enough context.
 
 ## Matching safeguards
 
-Version 1.2.0 added several safeguards intended to reduce false positives:
+The matcher includes safeguards intended to reduce false positives:
 
-- keyword families no longer gain artificial weight simply because many similar phrases are configured
+- keyword families do not gain artificial weight simply because many similar phrases are configured
 - fuzzy term evidence is counted once per unique meaningful term
 - phrase matching respects word boundaries
-- low-confidence matches are returned as `no_match`
+- low-confidence matches return `no_match`
 - known semantic ambiguity can return multiple CARCs instead of false certainty
+- paired coding-consistency CARCs require enough context to distinguish procedure, diagnosis, demographic, provider, and place-of-service conflicts
 
 ## Version
 
-Current crosswalk/API behavior version: **1.3.0**
+Current crosswalk/API behavior version: **1.4.0**
 
 ## Response terminology
 
-`reasonType` describes the specific reason represented by the CARC, such as `Deductible`, `Timely Filing`, `Medical Necessity`, or `Sequestration`. The earlier `adjustmentType` field was removed in version 1.3.0 because it implied that every CARC represented the same kind of operational adjustment.
+`reasonType` describes the specific reason represented by the CARC, such as `Deductible`, `Timely Filing`, `Medical Necessity`, `Diagnosis / Procedure Consistency`, or `Sequestration`.
 
 ## Important notes
 
